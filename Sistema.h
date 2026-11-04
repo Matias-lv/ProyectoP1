@@ -13,6 +13,7 @@ private:
     ListaDoble<Registro*> registros;
     int contadorRegistros;
     int minutosSimulados;
+   std::string textoFranja(int franja);
 
     std::string leerTexto(std::string mensaje);
     int leerEntero(std::string mensaje);
@@ -36,6 +37,8 @@ public:
     void registrarEntrada();
     void registrarSalida();
     void buscarRegistro();
+    void mostrarDocentes();
+    void mostrarMaterias();
     void mostrarRegistros();
     void eliminarRegistro();
     void simularHora();

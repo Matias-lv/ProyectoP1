@@ -2,6 +2,7 @@
 #include <iostream>
 #include <ctime>
 #include <cstdio>
+#include "Teclado.h"
 
 const int NUM_FRANJAS = 7;
 const int INICIO_FRANJA[NUM_FRANJAS] = {420, 540, 660, 780, 900, 1020, 1140};
@@ -28,11 +29,7 @@ std::string Sistema::leerTexto(std::string mensaje) {
 }
 
 int Sistema::leerEntero(std::string mensaje) {
-    while (true) {
-        std::string t = leerTexto(mensaje);
-        try { return std::stoi(t); }
-        catch (...) { std::cout << "Valor invalido.\n"; }
-    }
+    return Teclado::ingresarEntero(mensaje, 3);
 }
 
 int Sistema::minutosActuales() {
@@ -120,7 +117,16 @@ int Sistema::mostrarRegistrosDe(std::string cedula) {
 
 // ---------- opciones del menu ----------
 void Sistema::ingresarDocente() {
-    std::string cedula = leerTexto("Cedula: ");
+    std::string cedula = Teclado::ingresarNumeros("Cedula: ", 10);
+    if (!Teclado::cedulaValida(cedula)) {
+        std::cout << "Cedula invalida.\n";
+        return;
+    }
+    if (buscarProfesor(cedula) != nullptr) {
+        std::cout << "Ya existe un docente con esa cedula.\n";
+        return;
+    }
+
     if (cedula.empty()) { std::cout << "La cedula no puede estar vacia.\n"; return; }
     if (buscarProfesor(cedula) != nullptr) {
         std::cout << "Ya existe un docente con esa cedula.\n";
@@ -128,20 +134,20 @@ void Sistema::ingresarDocente() {
     }
     Profesor* p = new Profesor();
     p->setCedula(cedula);
-    p->setNombre(leerTexto("Nombre: "));
-    p->setApellido(leerTexto("Apellido: "));
+    p->setNombre(Teclado::ingresarLetras("Nombre: ", 30));
+    p->setApellido(Teclado::ingresarLetras("Apellido: ", 30));
     profesores.insertar(p);
     std::cout << "Docente ingresado.\n";
 }
 
 void Sistema::ingresarMateria() {
-    std::string nrc = leerTexto("NRC: ");
+    std::string nrc = Teclado::ingresarNumeros("NRC: ", 5);
     if (nrc.empty()) { std::cout << "El NRC no puede estar vacio.\n"; return; }
     if (buscarMateria(nrc) != nullptr) {
         std::cout << "Ya existe una materia con ese NRC.\n";
         return;
     }
-    std::string nombre = leerTexto("Nombre de la materia: ");
+    std::string nombre = Teclado::ingresarLetras("Nombre de la materia: ", 50);
     mostrarFranjas();
     int franja = leerEntero("Franja (1-7): ");
     if (franja < 1 || franja > NUM_FRANJAS) {
@@ -157,7 +163,7 @@ void Sistema::ingresarMateria() {
 }
 
 void Sistema::asignarMateria() {
-    Profesor* p = buscarProfesor(leerTexto("Cedula del docente: "));
+    Profesor* p = buscarProfesor(Teclado::ingresarNumeros("Cedula: ", 10));
     if (p == nullptr) { std::cout << "Docente no encontrado.\n"; return; }
 
     bool hay = false;
@@ -173,7 +179,7 @@ void Sistema::asignarMateria() {
     });
     if (!hay) { std::cout << "No hay materias disponibles para este docente.\n"; return; }
 
-    Materia* m = buscarMateria(leerTexto("NRC a asignar: "));
+    Materia* m = buscarMateria(Teclado::ingresarNumeros("NRC a asignar: ", 5));
     if (m == nullptr || m->getOcupado() || p->tieneChoque(m->getFranja())) {
         std::cout << "NRC no valido o no disponible.\n";
         return;
@@ -184,7 +190,7 @@ void Sistema::asignarMateria() {
 }
 
 void Sistema::registrarEntrada() {
-    std::string cedula = leerTexto("Cedula: ");
+    std::string cedula = Teclado::ingresarNumeros("Cedula: ", 10);
     Profesor* p = buscarProfesor(cedula);
     if (p == nullptr) { std::cout << "Docente no encontrado.\n"; return; }
 
@@ -218,7 +224,7 @@ void Sistema::registrarEntrada() {
 }
 
 void Sistema::registrarSalida() {
-    std::string cedula = leerTexto("Cedula: ");
+    std::string cedula = Teclado::ingresarNumeros("Cedula: ", 10);
     Profesor* p = buscarProfesor(cedula);
     if (p == nullptr) { std::cout << "Docente no encontrado.\n"; return; }
 
@@ -240,19 +246,49 @@ void Sistema::registrarSalida() {
 }
 
 void Sistema::buscarRegistro() {
-    mostrarRegistrosDe(leerTexto("Cedula del docente: "));
+    mostrarRegistrosDe(Teclado::ingresarNumeros("Cedula: ", 10));
 }
 
 void Sistema::mostrarRegistros() {
     if (registros.estaVacia()) { std::cout << "No hay registros.\n"; return; }
     registros.mostrar([&](Registro* r) { imprimirRegistro(r); });
 }
+std::string Sistema::textoFranja(int franja) {
+    int inicio = INICIO_FRANJA[franja - 1];
+    return "Franja " + std::to_string(franja) + " (" + minutosAHora(inicio) +
+           " - " + minutosAHora(inicio + DURACION) + ")";
+}
+
+void Sistema::mostrarDocentes() {
+    if (profesores.estaVacia()) { std::cout << "No hay docentes.\n"; return; }
+    profesores.mostrar([&](Profesor* p) {
+        std::cout << "Cedula: " << p->getCedula() << " | "
+                  << p->getNombre() << " " << p->getApellido() << "\n";
+        if (p->getMaterias()->estaVacia()) {
+            std::cout << "    Sin materias asignadas.\n";
+        } else {
+            p->getMaterias()->mostrar([&](Materia* m) {
+                std::cout << "    NRC: " << m->getNrc() << " | " << m->getNombre()
+                          << " | " << textoFranja(m->getFranja()) << "\n";
+            });
+        }
+    });
+}
+
+void Sistema::mostrarMaterias() {
+    if (materias.estaVacia()) { std::cout << "No hay materias.\n"; return; }
+    materias.mostrar([&](Materia* m) {
+        std::cout << "NRC: " << m->getNrc() << " | " << m->getNombre()
+                  << " | " << textoFranja(m->getFranja())
+                  << " | " << (m->getOcupado() ? "Ocupada" : "Disponible") << "\n";
+    });
+}
 
 void Sistema::eliminarRegistro() {
-    std::string cedula = leerTexto("Cedula del docente: ");
+    std::string cedula =Teclado::ingresarNumeros("Cedula: ", 10);
     if (mostrarRegistrosDe(cedula) == 0) return;
 
-    std::string id = leerTexto("ID del registro a eliminar: ");
+    std::string id = Teclado::ingresarNumeros("ID del registro a eliminar: ", 6);
     Nodo<Registro*>* n = registros.buscar([&](Registro* r) {
         return r->getId() == id && r->getCedula() == cedula;
     });
@@ -266,23 +302,25 @@ void Sistema::eliminarRegistro() {
 
 // Solo para pruebas: permite probar las ventanas de 6:50 a 7:10, etc.
 void Sistema::simularHora() {
-    int h = leerEntero("Hora (0-23, -1 para volver a la hora real): ");
-    if (h < 0) {
+    int h = leerEntero("Hora (0-23, 99 para volver a la hora real): ");
+    if (h == 99) {
         minutosSimulados = -1;
         std::cout << "Usando la hora real.\n";
         return;
     }
     int min = leerEntero("Minutos (0-59): ");
-    if (h > 23 || min < 0 || min > 59) { std::cout << "Hora invalida.\n"; return; }
+    if (h > 23 || min > 59) { std::cout << "Hora invalida.\n"; return; }
     minutosSimulados = h * 60 + min;
     std::cout << "Hora simulada: " << minutosAHora(minutosSimulados) << "\n";
-}
+}  
 
 void Sistema::menu() {
     int opcion;
     do {
-        std::cout << "\n===== REGISTRO DE DOCENTES =====\n"
-                  << "1. Ingresar docente\n"
+        std::cout << "\n===== REGISTRO DE DOCENTES =====\n";
+        if (minutosSimulados >= 0)
+            std::cout << "(Hora simulada: " << minutosAHora(minutosSimulados) << ")\n";
+        std::cout << "1. Ingresar docente\n"
                   << "2. Ingresar materia\n"
                   << "3. Asignar materia a docente\n"
                   << "4. Registrar entrada\n"
@@ -290,7 +328,9 @@ void Sistema::menu() {
                   << "6. Buscar registros\n"
                   << "7. Mostrar registros\n"
                   << "8. Eliminar registro\n"
-                  << "9. Simular hora (pruebas)\n"
+                  << "9. Mostrar docentes\n"
+                  << "10. Mostrar materias\n"
+                  << "11. Simular hora (pruebas)\n"
                   << "0. Salir\n";
         opcion = leerEntero("Opcion: ");
         switch (opcion) {
@@ -302,7 +342,9 @@ void Sistema::menu() {
             case 6: buscarRegistro(); break;
             case 7: mostrarRegistros(); break;
             case 8: eliminarRegistro(); break;
-            case 9: simularHora(); break;
+            case 9: mostrarDocentes(); break;
+            case 10: mostrarMaterias(); break;
+            case 11: simularHora(); break;
             case 0: std::cout << "Hasta luego.\n"; break;
             default: std::cout << "Opcion invalida.\n";
         }
