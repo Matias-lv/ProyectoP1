@@ -3,7 +3,9 @@
 #include <ctime>
 #include <cstdio>
 #include "Teclado.h"
-
+#include "archivo.h"
+#include <cctype>
+#include <string>
 const int NUM_FRANJAS = 7;
 const int INICIO_FRANJA[NUM_FRANJAS] = {420, 540, 660, 780, 900, 1020, 1140};
 const int DURACION = 120;
@@ -12,6 +14,24 @@ const int TOLERANCIA = 10;
 Sistema::Sistema() {
     contadorRegistros = 0;
     minutosSimulados = -1;
+    Archivo::cargarProfesores(profesores);
+    Archivo::cargarMaterias(materias, NUM_FRANJAS);
+    Archivo::cargarAsignaciones(profesores, materias);
+    Archivo::cargarRegistros(registros);
+    profesores.mostrar([&](Profesor* p) { p->setCorreo(generarCorreo(p)); });
+
+    int nProfesores = 0, nMaterias = 0, nRegistros = 0;
+    profesores.mostrar([&](Profesor*) { nProfesores++; });
+    materias.mostrar([&](Materia*) { nMaterias++; });
+    registros.mostrar([&](Registro* r) {
+        nRegistros++;
+        int id = atoi(r->getId().c_str());       // el contador sigue desde el ID mayor
+        if (id > contadorRegistros) contadorRegistros = id;
+    });
+    if (nProfesores + nMaterias + nRegistros > 0) {
+        std::cout << "Datos cargados: " << nProfesores << " docente(s), "
+                  << nMaterias << " materia(s), " << nRegistros << " registro(s).\n";
+    }
 }
 
 Sistema::~Sistema() {
@@ -67,7 +87,25 @@ Profesor* Sistema::buscarProfesor(std::string cedula) {
     });
     return n ? n->getDato() : nullptr;
 }
+std::string Sistema::generarCorreo(Profesor* p) {
+    std::string base;
+    base += p->getNombre()[0];
+    if (!p->getSegundoNombre().empty()) base += p->getSegundoNombre()[0];
+    base += p->getApellido();
 
+    for (size_t i = 0; i < base.size(); i++)
+        base[i] = std::tolower((unsigned char)base[i]);
+
+    std::string correo = base + "@espe.edu.ec";
+    int n = 0;
+    while (profesores.buscar([&](Profesor* q) {
+        return q != p && q->getCorreo() == correo;
+    }) != nullptr) {
+        n++;
+        correo = base + std::to_string(n) + "@espe.edu.ec";
+    }
+    return correo;
+}
 Materia* Sistema::buscarMateria(std::string nrc) {
     Nodo<Materia*>* n = materias.buscar([&](Materia* m) {
         return m->getNrc() == nrc;
@@ -115,7 +153,7 @@ int Sistema::mostrarRegistrosDe(std::string cedula) {
     return cantidad;
 }
 
-// ---------- opciones del menu ----------
+
 void Sistema::ingresarDocente() {
     std::string cedula = Teclado::ingresarNumeros("Cedula: ", 10);
     if (!Teclado::cedulaValida(cedula)) {
@@ -134,10 +172,14 @@ void Sistema::ingresarDocente() {
     }
     Profesor* p = new Profesor();
     p->setCedula(cedula);
-    p->setNombre(Teclado::ingresarLetras("Nombre: ", 30));
-    p->setApellido(Teclado::ingresarLetras("Apellido: ", 30));
+    p->setNombre(Teclado::ingresarLetras("Primer nombre: ", 30));
+    p->setSegundoNombre(Teclado::ingresarLetras("Segundo nombre: ", 30));
+    p->setApellido(Teclado::ingresarLetras("Primer apellido: ", 30));
+    p->setSegundoApellido(Teclado::ingresarLetras("Segundo apellido: ", 30));
+    p->setCorreo(generarCorreo(p));
     profesores.insertar(p);
-    std::cout << "Docente ingresado.\n";
+    Archivo::guardarProfesores(profesores);
+    std::cout << "Docente ingresado. Correo: " << p->getCorreo() << "\n";
 }
 
 void Sistema::ingresarMateria() {
@@ -159,6 +201,7 @@ void Sistema::ingresarMateria() {
     m->setNombre(nombre);
     m->setFranja(franja);
     materias.insertar(m);
+    Archivo::guardarMaterias(materias);
     std::cout << "Materia ingresada.\n";
 }
 
@@ -186,6 +229,7 @@ void Sistema::asignarMateria() {
     }
     p->asignarMateria(m);
     m->setOcupado(true);
+     Archivo::guardarAsignaciones(profesores);
     std::cout << "Materia asignada.\n";
 }
 
@@ -219,6 +263,7 @@ void Sistema::registrarEntrada() {
     r->setFecha(fecha);
     r->setHoraEntrada(minutosAHora(minutosActuales()));
     registros.insertar(r);
+    Archivo::guardarRegistros(registros);
     std::cout << "Entrada registrada: " << m->getNombre() << " a las "
               << r->getHoraEntrada() << ".\n";
 }
@@ -241,6 +286,7 @@ void Sistema::registrarSalida() {
         return;
     }
     r->setHoraSalida(minutosAHora(minutosActuales()));
+    Archivo::guardarRegistros(registros);
     std::cout << "Salida registrada: " << m->getNombre() << " a las "
               << r->getHoraSalida() << ".\n";
 }
@@ -263,7 +309,9 @@ void Sistema::mostrarDocentes() {
     if (profesores.estaVacia()) { std::cout << "No hay docentes.\n"; return; }
     profesores.mostrar([&](Profesor* p) {
         std::cout << "Cedula: " << p->getCedula() << " | "
-                  << p->getNombre() << " " << p->getApellido() << "\n";
+          << p->getNombre() << " " << p->getSegundoNombre() << " "
+          << p->getApellido() << " " << p->getSegundoApellido()
+          << " | Correo: " << p->getCorreo() << "\n";
         if (p->getMaterias()->estaVacia()) {
             std::cout << "    Sin materias asignadas.\n";
         } else {
@@ -297,6 +345,7 @@ void Sistema::eliminarRegistro() {
     Registro* r = n->getDato();
     registros.eliminar([&](Registro* x) { return x == r; });
     delete r;
+    Archivo::guardarRegistros(registros);
     std::cout << "Registro eliminado.\n";
 }
 
@@ -331,7 +380,7 @@ void Sistema::menu() {
                   << "9. Mostrar docentes\n"
                   << "10. Mostrar materias\n"
                   << "11. Simular hora (pruebas)\n"
-                  << "0. Salir\n";
+                  << "12. Salir\n";
         opcion = leerEntero("Opcion: ");
         switch (opcion) {
             case 1: ingresarDocente(); break;
@@ -345,8 +394,8 @@ void Sistema::menu() {
             case 9: mostrarDocentes(); break;
             case 10: mostrarMaterias(); break;
             case 11: simularHora(); break;
-            case 0: std::cout << "Hasta luego.\n"; break;
+            case 12: std::cout << "Hasta luego.\n"; break;
             default: std::cout << "Opcion invalida.\n";
         }
-    } while (opcion != 0);
+    } while (opcion != 12);
 }

@@ -22,6 +22,7 @@ private:
     std::string minutosAHora(int minutos);
     void mostrarFranjas();
     Profesor* buscarProfesor(std::string cedula);
+    std::string generarCorreo(Profesor* p);
     Materia* buscarMateria(std::string nrc);
     Materia* materiaEnVentana(Profesor* p, bool entrada);
     Registro* buscarRegistroHoy(std::string cedula, std::string nrc, std::string fecha);
