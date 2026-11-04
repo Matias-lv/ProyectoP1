@@ -1,2 +1,3 @@
-36630#Estructuta de datos#2
-36545#Calculo Vectorial#3
+1111#Ingles#1
+1112#Programacion#1
+1113#Programacion#1
