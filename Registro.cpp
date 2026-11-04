@@ -1,0 +1,175 @@
+/***********************************************************************
+ * Module:  Registro.cpp
+ * Author:  Personal
+ * Modified: martes, 3 de noviembre de 2026 22:41:16
+ * Purpose: Implementation of the class Registro
+ ***********************************************************************/
+
+#include "Profesor.h"
+#include "Registro.h"
+
+////////////////////////////////////////////////////////////////////////
+// Name:       Registro::getNrc()
+// Purpose:    Implementation of Registro::getNrc()
+// Return:     std::string
+////////////////////////////////////////////////////////////////////////
+
+std::string Registro::getNrc(void)
+{
+   return nrc;
+}
+
+////////////////////////////////////////////////////////////////////////
+// Name:       Registro::setNrc(std::string newNrc)
+// Purpose:    Implementation of Registro::setNrc()
+// Parameters:
+// - newNrc
+// Return:     void
+////////////////////////////////////////////////////////////////////////
+
+void Registro::setNrc(std::string newNrc)
+{
+   nrc = newNrc;
+}
+
+////////////////////////////////////////////////////////////////////////
+// Name:       Registro::getFecha()
+// Purpose:    Implementation of Registro::getFecha()
+// Return:     std::string
+////////////////////////////////////////////////////////////////////////
+
+std::string Registro::getFecha(void)
+{
+   return fecha;
+}
+
+////////////////////////////////////////////////////////////////////////
+// Name:       Registro::setFecha(std::string newFecha)
+// Purpose:    Implementation of Registro::setFecha()
+// Parameters:
+// - newFecha
+// Return:     void
+////////////////////////////////////////////////////////////////////////
+
+void Registro::setFecha(std::string newFecha)
+{
+   fecha = newFecha;
+}
+
+////////////////////////////////////////////////////////////////////////
+// Name:       Registro::getHoraEntrada()
+// Purpose:    Implementation of Registro::getHoraEntrada()
+// Return:     std::string
+////////////////////////////////////////////////////////////////////////
+
+std::string Registro::getHoraEntrada(void)
+{
+   return horaEntrada;
+}
+
+////////////////////////////////////////////////////////////////////////
+// Name:       Registro::setHoraEntrada(std::string newHoraEntrada)
+// Purpose:    Implementation of Registro::setHoraEntrada()
+// Parameters:
+// - newHoraEntrada
+// Return:     void
+////////////////////////////////////////////////////////////////////////
+
+void Registro::setHoraEntrada(std::string newHoraEntrada)
+{
+   horaEntrada = newHoraEntrada;
+}
+
+////////////////////////////////////////////////////////////////////////
+// Name:       Registro::getCedula()
+// Purpose:    Implementation of Registro::getCedula()
+// Return:     std::string
+////////////////////////////////////////////////////////////////////////
+
+std::string Registro::getCedula(void)
+{
+   return cedula;
+}
+
+////////////////////////////////////////////////////////////////////////
+// Name:       Registro::setCedula(std::string newCedula)
+// Purpose:    Implementation of Registro::setCedula()
+// Parameters:
+// - newCedula
+// Return:     void
+////////////////////////////////////////////////////////////////////////
+
+void Registro::setCedula(std::string newCedula)
+{
+   cedula = newCedula;
+}
+
+////////////////////////////////////////////////////////////////////////
+// Name:       Registro::getHoraSalida()
+// Purpose:    Implementation of Registro::getHoraSalida()
+// Return:     std::string
+////////////////////////////////////////////////////////////////////////
+
+std::string Registro::getHoraSalida(void)
+{
+   return horaSalida;
+}
+
+////////////////////////////////////////////////////////////////////////
+// Name:       Registro::setHoraSalida(std::string newHoraSalida)
+// Purpose:    Implementation of Registro::setHoraSalida()
+// Parameters:
+// - newHoraSalida
+// Return:     void
+////////////////////////////////////////////////////////////////////////
+
+void Registro::setHoraSalida(std::string newHoraSalida)
+{
+   horaSalida = newHoraSalida;
+}
+
+////////////////////////////////////////////////////////////////////////
+// Name:       Registro::getId()
+// Purpose:    Implementation of Registro::getId()
+// Return:     std::string
+////////////////////////////////////////////////////////////////////////
+
+std::string Registro::getId(void)
+{
+   return id;
+}
+
+////////////////////////////////////////////////////////////////////////
+// Name:       Registro::setId(std::string newId)
+// Purpose:    Implementation of Registro::setId()
+// Parameters:
+// - newId
+// Return:     void
+////////////////////////////////////////////////////////////////////////
+
+void Registro::setId(std::string newId)
+{
+   id = newId;
+}
+
+////////////////////////////////////////////////////////////////////////
+// Name:       Registro::Registro()
+// Purpose:    Implementation of Registro::Registro()
+// Return:     
+////////////////////////////////////////////////////////////////////////
+
+Registro::Registro()
+{
+   profesor = NULL;
+}
+
+////////////////////////////////////////////////////////////////////////
+// Name:       Registro::~Registro()
+// Purpose:    Implementation of Registro::~Registro()
+// Return:     
+////////////////////////////////////////////////////////////////////////
+
+Registro::~Registro()
+{
+   // TODO : implement
+}

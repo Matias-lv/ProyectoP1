@@ -1,0 +1,104 @@
+/***********************************************************************
+ * Module:  Nodo.cpp
+ * Author:  Personal
+ * Modified: martes, 3 de noviembre de 2026 22:47:21
+ * Purpose: Implementation of the class Nodo
+ ***********************************************************************/
+
+#include "Nodo.h"
+
+////////////////////////////////////////////////////////////////////////
+// Name:       Nodo::Nodo(T dato)
+// Purpose:    Implementation of Nodo::Nodo()
+// Parameters:
+// - dato
+// Return:     
+////////////////////////////////////////////////////////////////////////
+
+Nodo::Nodo(T dato)
+{
+   // TODO : implement
+}
+
+////////////////////////////////////////////////////////////////////////
+// Name:       Nodo::~Nodo()
+// Purpose:    Implementation of Nodo::~Nodo()
+// Return:     
+////////////////////////////////////////////////////////////////////////
+
+Nodo::~Nodo()
+{
+   // TODO : implement
+}
+
+////////////////////////////////////////////////////////////////////////
+// Name:       Nodo::getDato()
+// Purpose:    Implementation of Nodo::getDato()
+// Return:     T
+////////////////////////////////////////////////////////////////////////
+
+T Nodo::getDato(void)
+{
+   return dato;
+}
+
+////////////////////////////////////////////////////////////////////////
+// Name:       Nodo::setDato(T newDato)
+// Purpose:    Implementation of Nodo::setDato()
+// Parameters:
+// - newDato
+// Return:     void
+////////////////////////////////////////////////////////////////////////
+
+void Nodo::setDato(T newDato)
+{
+   dato = newDato;
+}
+
+////////////////////////////////////////////////////////////////////////
+// Name:       Nodo::getSiguiente_()
+// Purpose:    Implementation of Nodo::getSiguiente_()
+// Return:     Nodo*
+////////////////////////////////////////////////////////////////////////
+
+Nodo* Nodo::getSiguiente_(void)
+{
+   return siguiente_;
+}
+
+////////////////////////////////////////////////////////////////////////
+// Name:       Nodo::setSiguiente_(Nodo* newSiguiente_)
+// Purpose:    Implementation of Nodo::setSiguiente_()
+// Parameters:
+// - newSiguiente_
+// Return:     void
+////////////////////////////////////////////////////////////////////////
+
+void Nodo::setSiguiente_(Nodo* newSiguiente_)
+{
+   siguiente_ = newSiguiente_;
+}
+
+////////////////////////////////////////////////////////////////////////
+// Name:       Nodo::getAnterior()
+// Purpose:    Implementation of Nodo::getAnterior()
+// Return:     Nodo*
+////////////////////////////////////////////////////////////////////////
+
+Nodo* Nodo::getAnterior(void)
+{
+   return anterior;
+}
+
+////////////////////////////////////////////////////////////////////////
+// Name:       Nodo::setAnterior(Nodo* newAnterior)
+// Purpose:    Implementation of Nodo::setAnterior()
+// Parameters:
+// - newAnterior
+// Return:     void
+////////////////////////////////////////////////////////////////////////
+
+void Nodo::setAnterior(Nodo* newAnterior)
+{
+   anterior = newAnterior;
+}

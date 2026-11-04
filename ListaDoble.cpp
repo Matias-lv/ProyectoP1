@@ -1,0 +1,75 @@
+/***********************************************************************
+ * Module:  ListaDoble.cpp
+ * Author:  Personal
+ * Modified: martes, 3 de noviembre de 2026 22:47:17
+ * Purpose: Implementation of the class ListaDoble
+ ***********************************************************************/
+
+#include "Nodo.h"
+#include "ListaDoble.h"
+
+////////////////////////////////////////////////////////////////////////
+// Name:       ListaDoble::insertar()
+// Purpose:    Implementation of ListaDoble::insertar()
+// Return:     void
+////////////////////////////////////////////////////////////////////////
+
+void ListaDoble::insertar(void)
+{
+   // TODO : implement
+}
+
+////////////////////////////////////////////////////////////////////////
+// Name:       ListaDoble::eliminar()
+// Purpose:    Implementation of ListaDoble::eliminar()
+// Return:     bool
+////////////////////////////////////////////////////////////////////////
+
+bool ListaDoble::eliminar(void)
+{
+   // TODO : implement
+}
+
+////////////////////////////////////////////////////////////////////////
+// Name:       ListaDoble::buscar()
+// Purpose:    Implementation of ListaDoble::buscar()
+// Return:     Nodo*
+////////////////////////////////////////////////////////////////////////
+
+Nodo* ListaDoble::buscar(void)
+{
+   // TODO : implement
+}
+
+////////////////////////////////////////////////////////////////////////
+// Name:       ListaDoble::mostrar()
+// Purpose:    Implementation of ListaDoble::mostrar()
+// Return:     void
+////////////////////////////////////////////////////////////////////////
+
+void ListaDoble::mostrar(void)
+{
+   // TODO : implement
+}
+
+////////////////////////////////////////////////////////////////////////
+// Name:       ListaDoble::ListaDoble()
+// Purpose:    Implementation of ListaDoble::ListaDoble()
+// Return:     
+////////////////////////////////////////////////////////////////////////
+
+ListaDoble::ListaDoble()
+{
+   nodos = NULL;
+}
+
+////////////////////////////////////////////////////////////////////////
+// Name:       ListaDoble::~ListaDoble()
+// Purpose:    Implementation of ListaDoble::~ListaDoble()
+// Return:     
+////////////////////////////////////////////////////////////////////////
+
+ListaDoble::~ListaDoble()
+{
+   // TODO : implement
+}

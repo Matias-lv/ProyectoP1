@@ -1,0 +1,75 @@
+/***********************************************************************
+ * Module:  Sistema.cpp
+ * Author:  Personal
+ * Modified: martes, 3 de noviembre de 2026 22:32:51
+ * Purpose: Implementation of the class Sistema
+ ***********************************************************************/
+
+#include "ListaDoble.h"
+#include "Sistema.h"
+
+////////////////////////////////////////////////////////////////////////
+// Name:       Sistema::ingresarDocente()
+// Purpose:    Implementation of Sistema::ingresarDocente()
+// Return:     void
+////////////////////////////////////////////////////////////////////////
+
+void Sistema::ingresarDocente(void)
+{
+   // TODO : implement
+}
+
+////////////////////////////////////////////////////////////////////////
+// Name:       Sistema::ingresarMateria()
+// Purpose:    Implementation of Sistema::ingresarMateria()
+// Return:     void
+////////////////////////////////////////////////////////////////////////
+
+void Sistema::ingresarMateria(void)
+{
+   // TODO : implement
+}
+
+////////////////////////////////////////////////////////////////////////
+// Name:       Sistema::asignarMateria()
+// Purpose:    Implementation of Sistema::asignarMateria()
+// Return:     void
+////////////////////////////////////////////////////////////////////////
+
+void Sistema::asignarMateria(void)
+{
+   // TODO : implement
+}
+
+////////////////////////////////////////////////////////////////////////
+// Name:       Sistema::registrarAsistencia()
+// Purpose:    Implementation of Sistema::registrarAsistencia()
+// Return:     void
+////////////////////////////////////////////////////////////////////////
+
+void Sistema::registrarAsistencia(void)
+{
+   // TODO : implement
+}
+
+////////////////////////////////////////////////////////////////////////
+// Name:       Sistema::Sistema()
+// Purpose:    Implementation of Sistema::Sistema()
+// Return:     
+////////////////////////////////////////////////////////////////////////
+
+Sistema::Sistema()
+{
+   listas = NULL;
+}
+
+////////////////////////////////////////////////////////////////////////
+// Name:       Sistema::~Sistema()
+// Purpose:    Implementation of Sistema::~Sistema()
+// Return:     
+////////////////////////////////////////////////////////////////////////
+
+Sistema::~Sistema()
+{
+   // TODO : implement
+}
