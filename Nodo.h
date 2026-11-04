@@ -1,32 +1,24 @@
-/***********************************************************************
- * Module:  Nodo.h
- * Author:  Personal
- * Modified: martes, 3 de noviembre de 2026 22:47:21
- * Purpose: Declaration of the class Nodo
- ***********************************************************************/
+#ifndef NODO_H
+#define NODO_H
 
-#if !defined(__RegistroDocente_Nodo_h)
-#define __RegistroDocente_Nodo_h
-
-class Nodo
-{
-public:
-   Nodo(T dato);
-   ~Nodo();
-   T getDato(void);
-   void setDato(T newDato);
-   Nodo* getSiguiente_(void);
-   void setSiguiente_(Nodo* newSiguiente_);
-   Nodo* getAnterior(void);
-   void setAnterior(Nodo* newAnterior);
-
-protected:
+template <typename T>
+class Nodo {
 private:
-   T dato;
-   Nodo* siguiente_;
-   Nodo* anterior;
+    T dato;
+    Nodo<T>* siguiente;
+    Nodo<T>* anterior;
 
-
+public:
+    Nodo(T dato);
+    ~Nodo();
+    T getDato();
+    void setDato(T newDato);
+    Nodo<T>* getSiguiente();
+    void setSiguiente(Nodo<T>* newSiguiente);
+    Nodo<T>* getAnterior();
+    void setAnterior(Nodo<T>* newAnterior);
 };
+
+#include "Nodo.cpp"
 
 #endif

@@ -1,34 +1,17 @@
-/***********************************************************************
- * Module:  Profesor.h
- * Author:  Personal
- * Modified: martes, 3 de noviembre de 2026 22:41:16
- * Purpose: Declaration of the class Profesor
- ***********************************************************************/
+#ifndef PROFESOR_H
+#define PROFESOR_H
+#include "Persona.h"
+#include "Materia.h"
+#include "ListaDoble.h"
 
-#if !defined(__RegistroDocente_Profesor_h)
-#define __RegistroDocente_Profesor_h
-
-class Materia;
-
-#include <Persona.h>
-#include <Materia.h>
-
-class Profesor : public Persona
-{
-public:
-   Profesor();
-   ~Profesor();
-   void asignarMateria(Materia* materia);
-   bool tieneChoque(int franja);
-   ListaDoble<Materia*>* getMaterias(void);
-
-   Materia** materiasAsignadas;
-
-protected:
+class Profesor : public Persona {
 private:
-   ListaDoble<Materia*> materias;
-
-
+    ListaDoble<Materia*> materias;
+public:
+    Profesor();
+    ~Profesor();
+    ListaDoble<Materia*>* getMaterias();
+    void asignarMateria(Materia* materia);
+    bool tieneChoque(int franja);
 };
-
 #endif

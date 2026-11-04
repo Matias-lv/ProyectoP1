@@ -1,35 +1,23 @@
-/***********************************************************************
- * Module:  Materia.h
- * Author:  Personal
- * Modified: martes, 3 de noviembre de 2026 22:35:25
- * Purpose: Declaration of the class Materia
- ***********************************************************************/
+#ifndef MATERIA_H
+#define MATERIA_H
+#include <string>
 
-#if !defined(__RegistroDocente_Materia_h)
-#define __RegistroDocente_Materia_h
-
-class Materia
-{
-public:
-   Materia();
-   ~Materia();
-   std::string getNrc(void);
-   void setNrc(std::string newNrc);
-   std::string getNombre(void);
-   void setNombre(std::string newNombre);
-   int getFranja(void);
-   void setFranja(int newFranja);
-   bool getOcupado(void);
-   void setOcupado(bool newOcupado);
-
-protected:
+class Materia {
 private:
-   std::string nrc;
-   std::string nombre;
-   int franja;
-   bool ocupado;
-
-
+    std::string nrc;
+    std::string nombre;
+    int franja;
+    bool ocupado;
+public:
+    Materia();
+    ~Materia();
+    std::string getNrc();
+    void setNrc(std::string newNrc);
+    std::string getNombre();
+    void setNombre(std::string newNombre);
+    int getFranja();
+    void setFranja(int newFranja);
+    bool getOcupado();
+    void setOcupado(bool newOcupado);
 };
-
 #endif
