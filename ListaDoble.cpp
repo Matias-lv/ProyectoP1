@@ -1,75 +1,77 @@
-/***********************************************************************
- * Module:  ListaDoble.cpp
- * Author:  Personal
- * Modified: martes, 3 de noviembre de 2026 22:47:17
- * Purpose: Implementation of the class ListaDoble
- ***********************************************************************/
-
-#include "Nodo.h"
 #include "ListaDoble.h"
-
-////////////////////////////////////////////////////////////////////////
-// Name:       ListaDoble::insertar()
-// Purpose:    Implementation of ListaDoble::insertar()
-// Return:     void
-////////////////////////////////////////////////////////////////////////
-
-void ListaDoble::insertar(void)
-{
-   // TODO : implement
+#include <functional>
+template <typename T>
+ListaDoble<T>::ListaDoble() {
+    cabeza = nullptr;
+    cola = nullptr;
 }
 
-////////////////////////////////////////////////////////////////////////
-// Name:       ListaDoble::eliminar()
-// Purpose:    Implementation of ListaDoble::eliminar()
-// Return:     bool
-////////////////////////////////////////////////////////////////////////
-
-bool ListaDoble::eliminar(void)
-{
-   // TODO : implement
+template <typename T>
+ListaDoble<T>::~ListaDoble() {
+    Nodo<T>* actual = cabeza;
+    while (actual != nullptr) {
+        Nodo<T>* siguiente = actual->getSiguiente();
+        delete actual;
+        actual = siguiente;
+    }
 }
 
-////////////////////////////////////////////////////////////////////////
-// Name:       ListaDoble::buscar()
-// Purpose:    Implementation of ListaDoble::buscar()
-// Return:     Nodo*
-////////////////////////////////////////////////////////////////////////
-
-Nodo* ListaDoble::buscar(void)
-{
-   // TODO : implement
+template <typename T>
+bool ListaDoble<T>::estaVacia() {
+    return cabeza == nullptr;
 }
 
-////////////////////////////////////////////////////////////////////////
-// Name:       ListaDoble::mostrar()
-// Purpose:    Implementation of ListaDoble::mostrar()
-// Return:     void
-////////////////////////////////////////////////////////////////////////
-
-void ListaDoble::mostrar(void)
-{
-   // TODO : implement
+template <typename T>
+Nodo<T>* ListaDoble<T>::getCabeza() {
+    return cabeza;
 }
 
-////////////////////////////////////////////////////////////////////////
-// Name:       ListaDoble::ListaDoble()
-// Purpose:    Implementation of ListaDoble::ListaDoble()
-// Return:     
-////////////////////////////////////////////////////////////////////////
-
-ListaDoble::ListaDoble()
-{
-   nodos = NULL;
+template <typename T>
+void ListaDoble<T>::insertar(T dato) {
+    Nodo<T>* nuevo = new Nodo<T>(dato);
+    if (cabeza == nullptr) {
+        cabeza = nuevo;
+        cola = nuevo;
+    } else {
+        cola->setSiguiente(nuevo);
+        nuevo->setAnterior(cola);
+        cola = nuevo;
+    }
 }
 
-////////////////////////////////////////////////////////////////////////
-// Name:       ListaDoble::~ListaDoble()
-// Purpose:    Implementation of ListaDoble::~ListaDoble()
-// Return:     
-////////////////////////////////////////////////////////////////////////
+template <typename T>
+void ListaDoble<T>::mostrar(std::function<void(T)> imprimir) {
+    Nodo<T>* actual = cabeza;
+    while (actual != nullptr) {
+        imprimir(actual->getDato());
+        actual = actual->getSiguiente();
+    }
+}
 
-ListaDoble::~ListaDoble()
-{
-   // TODO : implement
+template <typename T>
+Nodo<T>* ListaDoble<T>::buscar(std::function<bool(T)> criterio) {
+    Nodo<T>* actual = cabeza;
+    while (actual != nullptr) {
+        if (criterio(actual->getDato())) return actual;
+        actual = actual->getSiguiente();
+    }
+    return nullptr;
+}
+
+template <typename T>
+bool ListaDoble<T>::eliminar(std::function<bool(T)> criterio) {
+    Nodo<T>* actual = buscar(criterio);
+    if (actual == nullptr) return false;
+
+    Nodo<T>* ant = actual->getAnterior();
+    Nodo<T>* sig = actual->getSiguiente();
+
+    if (ant != nullptr) ant->setSiguiente(sig);
+    else cabeza = sig;
+
+    if (sig != nullptr) sig->setAnterior(ant);
+    else cola = ant;
+
+    delete actual;
+    return true;
 }
